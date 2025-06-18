@@ -28,10 +28,32 @@
 .rv-app {
   min-height: 100vh;
   display: flex;
-  background: var(--rv-bg);
+  /* Gradient adapts to theme: uses brighter greens/yellows for light, deep blue/purple for dark */
+  background: linear-gradient(
+    132deg,
+    var(--gradient-start, #e8f5e9) 0%,
+    var(--gradient-middle, #fffde7) 38%,
+    var(--gradient-end, #fff3e0) 100%
+  );
   font-family: 'Inter', 'Roboto', sans-serif;
   color: var(--rv-text);
   transition: background 0.2s, color 0.15s;
+  /* Fallback for browsers lacking gradient support */
+  background-color: var(--rv-bg);
+}
+
+/* Light theme gradients (default) */
+.rv-app {
+  --gradient-start: #e8f5e9;   /* light green */
+  --gradient-middle: #fffde7;  /* pale yellow */
+  --gradient-end: #fff3e0;     /* soft orange */
+}
+
+/* Dark theme gradients */
+.rv-theme-dark.rv-app {
+  --gradient-start: #232639;   /* deep sidebar blue */
+  --gradient-middle: #282a3a;  /* richer blue-grey */
+  --gradient-end: #2e1534;     /* muted purple accent */
 }
 
 /* Sidebar */
