@@ -4,7 +4,7 @@ import "./MainContainer.css";
 // PUBLIC_INTERFACE
 function MainContainer() {
   /** Main container for RecipeVault app.
-   *  Implements sidebar navigation, integrates light theme, and layout for main app features.
+   *  Implements sidebar navigation, integrates theme selection, and layout for main app features.
    */
 
   // Sidebar navigation items
@@ -15,17 +15,24 @@ function MainContainer() {
     { label: "Account", key: "account" },
   ];
 
-  // Content to display by section (placeholder logic for now)
+  // App section and authentication state
   const [section, setSection] = useState("browse");
-
-  // Placeholder authentication/user state
   const [user, setUser] = useState(null);
+
+  // Theme state: 'light' | 'dark'
+  const [theme, setTheme] = useState("light");
+
+  // PUBLIC_INTERFACE
+  function toggleTheme() {
+    /** Toggles between light and dark themes */
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  }
 
   // Simulate login/logout (for demo)
   const handleAuth = () =>
     setUser((prev) => (prev ? null : { name: "Chef User" }));
 
-  // Render section content (stub for now)
+  // Render section content
   const renderSection = () => {
     switch (section) {
       case "browse":
@@ -55,13 +62,22 @@ function MainContainer() {
             <h2>Account</h2>
             {user ? (
               <>
-                <div>Logged in as <b>{user.name}</b></div>
-                <button className="rv-btn rv-btn-logout" onClick={handleAuth}>Logout</button>
+                <div>
+                  Logged in as <b>{user.name}</b>
+                </div>
+                <button className="rv-btn rv-btn-logout" onClick={handleAuth}>
+                  Logout
+                </button>
               </>
             ) : (
               <>
                 <div>Please log in to manage your account.</div>
-                <button className="rv-btn rv-btn-primary" onClick={handleAuth}>Login</button>
+                <button
+                  className="rv-btn rv-btn-primary"
+                  onClick={handleAuth}
+                >
+                  Login
+                </button>
               </>
             )}
           </div>
@@ -71,13 +87,41 @@ function MainContainer() {
     }
   };
 
+  // Theme toggle button
+  const ThemeToggle = () => (
+    <button
+      className="rv-theme-toggle"
+      aria-label="Toggle theme"
+      onClick={toggleTheme}
+      title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+    >
+      {theme === "light" ? (
+        <span role="img" aria-label="Moon">
+          🌙
+        </span>
+      ) : (
+        <span role="img" aria-label="Light">
+          ☀️
+        </span>
+      )}
+      <span className="rv-theme-toggle-label">
+        {theme === "light" ? "Dark" : "Light"} Mode
+      </span>
+    </button>
+  );
+
+  // Apply theme class to main app container
   return (
-    <div className="rv-app">
+    <div className={`rv-app rv-theme-${theme}`}>
       {/* Sidebar Navigation */}
       <aside className="rv-sidebar">
         <div className="rv-sidebar-header">
           <span className="rv-logo">🍴</span>
           <span className="rv-app-title">RecipeVault</span>
+        </div>
+        {/* Add Theme Toggle switch/button */}
+        <div className="rv-sidebar-theme-toggle">
+          <ThemeToggle />
         </div>
         <nav className="rv-nav">
           {navigation.map((item) => (
